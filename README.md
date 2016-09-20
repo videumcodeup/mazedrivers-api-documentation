@@ -93,9 +93,9 @@ Request to rejoin the game with the token you got when joining.
 Error responses:
 ```json
 
-{"type": "REJOIN_FAILURE", "payload": "RESUME_TOKEN_INVALID" }
-{"type": "REJOIN_FAILURE", "payload": "RESUME_TOKEN_MISSING" }
-{"type": "REJOIN_FAILURE", "payload": "RESUME_TOKEN_WRONG" }
+{"type": "REJOIN_FAILURE", "payload": "REJOIN_TOKEN_INVALID" }
+{"type": "REJOIN_FAILURE", "payload": "REJOIN_TOKEN_MISSING" }
+{"type": "REJOIN_FAILURE", "payload": "REJOIN_TOKEN_WRONG" }
 ```
 
 Success response:
