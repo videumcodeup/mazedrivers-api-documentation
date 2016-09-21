@@ -108,7 +108,19 @@ Success response:
 Start driving in a direction `EAST`, `WEST`, `NORTH` or `SOUTH`.
 
 ```json
-{"type": "DRIVE", "payload": "NORTH"}
+{"type": "DRIVE_REQUEST", "payload": "NORTH"}
+```
+
+Error responses:
+```json
+{"type": "DRIVE_FAILURE", "payload": "DRIVE_DIRECTION_MISSING"}
+{"type": "DRIVE_FAILURE", "payload": "DRIVE_DIRECTION_INVALID"}
+{"type": "DRIVE_FAILURE", "payload": "DRIVE_JOIN_GAME_FIRST"}
+```
+
+Success response:
+```json
+{"type": "DRIVE_SUCCESS"}
 ```
 
 ## `BREAK`
@@ -126,4 +138,3 @@ Change gear into reverse and drive backwards at a slower pace.
 ```json
 {"type": "REVERSE"}
 ```
->>>>>>> Initial commit
