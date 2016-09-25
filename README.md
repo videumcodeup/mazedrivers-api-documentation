@@ -43,15 +43,13 @@ or `{ type: 'SOME_ERROR', error: true, payload: 'ERROR_DESCRIPTION' }` and
 could be handled something like this:
 
 ```javascript
-  const action = JSON.parse(event.data)
-  console.log(action)
-  switch (action.type) {
-    case 'JOIN_SUCCESS':
-      localStorage.setItem('mazedrivers-token', action.payload.token)
-      break
-    default:
-      break
-  }
+const action = JSON.parse(event.data)
+switch (action.type) {
+  case 'JOIN_SUCCESS':
+    localStorage.setItem('mazedrivers-token', action.payload.token)
+    break
+  default:
+    break
 }
 ```
 
@@ -62,48 +60,51 @@ You start out in spectator-mode when you connect to the socket.
 Request to join the game with your car. You must specify your nickname.
 
 ```json
-{"type": "JOIN_REQUEST", "payload": { "nickname": "Your name" } }
+{"type": "JOIN_REQUEST", "payload": {"nickname": "Your name"}}
 ```
 
 Error responses:
 ```json
-{"type": "JOIN_FAILURE", "payload": "JOIN_TOO_LATE_GAME_ALREADY_STARTED" }
-{"type": "JOIN_FAILURE", "payload": "JOIN_NICKNAME_MISSING" }
-{"type": "JOIN_FAILURE", "payload": "JOIN_NICKNAME_INVALID" }
-{"type": "JOIN_FAILURE", "payload": "JOIN_NICKNAME_TOO_SHORT" }
-{"type": "JOIN_FAILURE", "payload": "JOIN_NICKNAME_TOO_LONG" }
-{"type": "JOIN_FAILURE", "payload": "JOIN_NICKNAME_ALREADY_TAKEN" }
+{"type": "JOIN_FAILURE", "payload": "JOIN_NICKNAME_MISSING"}
+{"type": "JOIN_FAILURE", "payload": "JOIN_NICKNAME_INVALID"}
+{"type": "JOIN_FAILURE", "payload": "JOIN_NICKNAME_TOO_SHORT"}
+{"type": "JOIN_FAILURE", "payload": "JOIN_NICKNAME_TOO_LONG"}
+{"type": "JOIN_FAILURE", "payload": "JOIN_NICKNAME_ALREADY_TAKEN"}
 ```
 
 Success response includes a token that should be used if you need to reconnect
 to the websocket server after having reloaded the browser or lost connection.
 
 ```json
-{"type": "JOIN_SUCCESS", "payload": { "token": "6487d24e-02e4-41ce-8371-db56742d3b6a" } }
+{"type": "JOIN_SUCCESS", "payload": {"token": "6487d24e-02e4-41ce-8371-db56742d3b6a"}}
 ```
 
-## `REJOIN_REQUEST`
+### `REJOIN_REQUEST`
 
 Request to rejoin the game with the token you got when joining.
 
 ```json
-{"type": "REJOIN_REQUEST", "payload": { "token": "6487d24e-02e4-41ce-8371-db56742d3b6a"  } }
+{"type": "REJOIN_REQUEST", "payload": {
+   "token": "6487d24e-02e4-41ce-8371-db56742d3b6a"}}
 ```
 
 Error responses:
 ```json
 
-{"type": "REJOIN_FAILURE", "payload": "REJOIN_TOKEN_INVALID" }
-{"type": "REJOIN_FAILURE", "payload": "REJOIN_TOKEN_MISSING" }
-{"type": "REJOIN_FAILURE", "payload": "REJOIN_TOKEN_WRONG" }
+{"type": "REJOIN_FAILURE", "payload": "REJOIN_TOKEN_MISSING"}
+{"type": "REJOIN_FAILURE", "payload": "REJOIN_TOKEN_INVALID"}
+{"type": "REJOIN_FAILURE", "payload": "REJOIN_TOKEN_WRONG"}
 ```
 
 Success response:
 ```json
-{"type": "REJOIN_REQUEST", "payload": { "token": "6487d24e-02e4-41ce-8371-db56742d3b6a"  } }
+{"type": "REJOIN_REQUEST", "payload": {
+   "token": "6487d24e-02e4-41ce-8371-db56742d3b6a",
+   "nickname": "Your name",
+   "gameId": "cee6b387-80ac-468b-9093-8d691c4385ab"}}
 ```
 
-## `DRIVE`
+### `DRIVE`
 
 Start driving in a direction `EAST`, `WEST`, `NORTH` or `SOUTH`.
 
@@ -123,7 +124,7 @@ Success response:
 {"type": "DRIVE_SUCCESS"}
 ```
 
-## `BREAK`
+### `BREAK`
 
 Push the breakes to stop the car! (This action does not need a payload
 
@@ -131,10 +132,46 @@ Push the breakes to stop the car! (This action does not need a payload
 {"type": "BREAK"}
 ```
 
-## `REVERSE`
+### `REVERSE`
 
 Change gear into reverse and drive backwards at a slower pace.
 
 ```json
 {"type": "REVERSE"}
 ```
+
+## State updates
+After joining the game, a message like this will be sent to you containing all
+of the current state. This is mainly used for rendering the game.
+
+```json
+{
+  "type": "STATE",
+  "payload": {
+    "players": {
+      "andreas": { "x": 10, "y": 5, "direction": "WEST", "speed": 0 },
+      "kevin": { "x": 7, "y": 3, "direction": "SOUTH", "speed": 1 }
+    },
+    "maze": [
+      ["corner", "wall", "corner", "wall", "..."],
+      ["wall", "room", "opening", "room", "..."],
+      ["..."]
+    ]
+  }
+}
+```
+
+### Incremental updates as double-dimension array
+After that you'll only get incremental updates looking like this whenever
+something changes. This is mainly used for rendering the game.
+
+```javascript
+// collection, scope, key, value
+[
+  ["players", "albert", "direction", "NORTH"],
+  ["maze", 4, 7, "NORTH"],
+  ["players", "kevin", "x", 10],
+  ["players", "kevin", "y", 7]
+]
+```
+(There is no payload wrapping in this particular case)
