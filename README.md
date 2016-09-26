@@ -175,3 +175,30 @@ something changes. This is mainly used for rendering the game.
 ]
 ```
 (There is no payload wrapping in this particular case)
+
+### `LIST_REQUEST`
+The spectator client uses this to show a list of clients and games.
+
+```json
+{"type": "LIST_REQUEST"}
+```
+
+### `FOLLOW_REQUEST`
+The spectator client uses this to follow a specific player in each game they
+participate in regardless if the player has joined a game yet or not).
+
+```json
+{"type": "FOLLOW_REQUEST", "payload": {"nickname": "kevin"}}
+```
+
+Error responses:
+```json
+{"type": "FOLLOW_FAILURE", "payload": "FOLLOW_NICKNAME_MISSING"}
+{"type": "FOLLOW_FAILURE", "payload": "FOLLOW_NICKNAME_INVALID"}
+{"type": "FOLLOW_FAILURE", "payload": "FOLLOW_NICKNAME_WRONG"}
+```
+
+Success response:
+```json
+{"type": "FOLLOW_SUCCESS"}
+```
