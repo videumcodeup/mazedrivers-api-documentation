@@ -126,18 +126,10 @@ Success response:
 
 ### `BREAK`
 
-Push the breakes to stop the car! (This action does not need a payload
+Push the breakes to stop the car! (This action does not need a payload)
 
 ```json
-{"type": "BREAK"}
-```
-
-### `REVERSE`
-
-Change gear into reverse and drive backwards at a slower pace.
-
-```json
-{"type": "REVERSE"}
+{"type": "BREAK_REQUEST"}
 ```
 
 ## State updates
