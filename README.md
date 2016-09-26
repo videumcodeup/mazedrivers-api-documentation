@@ -194,3 +194,23 @@ Success response:
 ```json
 {"type": "FOLLOW_SUCCESS"}
 ```
+
+### `UNFOLLOW_REQUEST`
+The spectator client uses this to show the game list again instead of following
+a player.
+
+```json
+{"type": "UNFOLLOW_REQUEST", "payload": {"nickname": "kevin"}}
+```
+
+Error responses:
+```json
+{"type": "UNFOLLOW_FAILURE", "payload": "UNFOLLOW_NICKNAME_MISSING"}
+{"type": "UNFOLLOW_FAILURE", "payload": "UNFOLLOW_NICKNAME_INVALID"}
+{"type": "UNFOLLOW_FAILURE", "payload": "UNFOLLOW_NICKNAME_WRONG"}
+```
+
+Success response:
+```json
+{"type": "UNFOLLOW_SUCCESS"}
+```
