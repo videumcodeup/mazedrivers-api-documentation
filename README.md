@@ -3,6 +3,12 @@ Mazedrivers API documentation
 
 # VideumCodeup Mazedrivers
 
+## Server
+
+Go to [mazedrivers.videumcodeup.se](http://mazedrivers.videumcodeup.se/) and enter `46.101.96.185` as host.
+
+Connect your WebSocket client to `46.101.96.185:8001`.
+
 # API
 
 This is the API for the server-side version of Bomberman. Written by [Andreas
